@@ -1,0 +1,7 @@
+# for backend stuff
+__pycache__
+# for frontend stuff
+.vscode
+dist
+node_modules
+

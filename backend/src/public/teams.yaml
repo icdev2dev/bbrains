@@ -1,0 +1,51 @@
+teams:
+  - teamId: 045f2018-21f6-40c2-bf15-302e8e98a671
+    teamName: Strategy Team for introducing LLMs
+    description: >
+      The Strategy Team is responsible for devising a comprehensive plan to introduce LLMs (Let's Log Matters) to the
+      company's products and services. This team focuses on aligning LLM implementation with the organization's
+      strategic goals.
+
+    members:
+      - memberId: ebaac0b9-66a9-4306-868e-3f4a62e4d755
+        teamMemberName: William Adams
+
+      - memberId: 24c4a8b7-b244-40d5-af3d-63dbf93443d2
+        teamMemberName: Robert Turner
+
+      - memberId: 83d90a97-2c04-471d-93c0-59a53c81c18d
+        teamMemberName: Jessica Adams
+
+  - teamId: 33e3a8f9-9f28-47c8-8a33-944e7da1e66e
+    teamName: Operations Team for introducing LLMs
+    description: >
+      The Operations Team focuses on planning and executing the implementation of LLMs (Let's Log Matters) within the
+      company's existing infrastructure. This team is responsible for coordinating with various departments and ensuring
+      a smooth rollout.
+
+    members:
+      - memberId: 7888bb8b-9f91-4cd2-b117-3a9fb888e2c7
+        teamMemberName: Jennifer Miller
+
+      - memberId: c1b31207-0146-4b8b-94e6-6df30a3c167b
+        teamMemberName: Mark Williams
+
+      - memberId: 690f27ca-6859-4b86-8e0e-6a258894ef3a
+        teamMemberName: Amanda Clark
+
+  - teamId: 1db4420f-5c0e-4631-a46a-3e61b7ad348e
+    teamName: Implementation Team for introducing LLMs
+    description: >
+      The Implementation Team is responsible for the technical aspects of integrating LLMs (Let's Log Matters) into the
+      company's products and services. This team works closely with developers and engineers to ensure successful
+      integration.
+
+    members:
+      - memberId: d3d5c298-9504-4cb3-b68b-87a6f19b7e42
+        teamMemberName: John Smith
+
+      - memberId: 6d4be81e-67b2-421d-a4b1-4b9319374130
+        teamMemberName: Sarah Johnson
+
+      - memberId: f2992d5b-8ce0-4a47-bbfc-8e4c038e9186
+        teamMemberName: Michael Anderson
