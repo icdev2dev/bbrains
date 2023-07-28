@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import openai
+from os.path import exists
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -15,8 +16,26 @@ def serve_file_users():
 @app.route('/teams_yaml', methods=['GET'])
 def serve_file_teams():
     file_path = 'public/teams.yaml'
+    print(exists(file_path))
     print("ok in teams")
     return send_file(file_path, as_attachment=True)
+
+@app.route('/whoami_yaml', methods=['GET'])
+def serve_file_whoami():
+    file_path = 'public/whoami.yaml'
+    print(exists(file_path))
+    print("ok in whoami")
+    return send_file(file_path, as_attachment=True)
+
+@app.route('/mypersonas_yaml', methods=['GET'])
+def serve_file_mypersonas():
+    file_path = 'public/mypersonas.yaml'
+    print(exists(file_path))
+    print("ok in mypersonas")
+
+    
+    return send_file(file_path, as_attachment=True)
+
 
 @app.route('/post_endpoint', methods=['POST'])
 def handle_post_request():

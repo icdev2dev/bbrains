@@ -1,21 +1,19 @@
 <!-- App.svelte -->
 <script>
   import { Route, Router, Link } from "svelte-routing";
-  
-
-  import DataServices from "./DataServices.svelte";
-  
-  
+  import DataServices from "./DataServices.svelte";  
 
 
   import HomePage from "./lib/pages/HomePage.svelte";
   import TeamPage from "./lib/pages/TeamPage.svelte";
   import MembersPage from "./lib/pages/MembersPage.svelte";
+  import WhoAmI from "./lib/pages/WhoAmI.svelte";
 
   let tabs = [
     {name:'Home', route: '/', component: HomePage},
     {name: 'Teams', route: '/teams', component: TeamPage},
-    {name: 'Members', route: '/members', component: MembersPage}
+    {name: 'Members', route: '/members', component: MembersPage},
+    {name: 'About Me', route: '/aboutme', component: WhoAmI}
   ]
 
 </script>
@@ -23,7 +21,7 @@
 <DataServices/>
 
 
-<Router $basepath>
+<Router>
 <nav>
   <ul>
     {#each tabs as tab}
@@ -33,8 +31,8 @@
 </nav>
 
 {#each tabs as tab}
-  <Route path={tab.route} let:params>
-    <svelte:component this={tab.component} params={params}/>
+  <Route path={tab.route} >
+    <svelte:component this={tab.component} />
   </Route>
 {/each}
 </Router>

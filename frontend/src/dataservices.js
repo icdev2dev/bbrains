@@ -4,14 +4,19 @@ import yaml from 'js-yaml';
 
 export const usersYaml = writable({});
 export const teamsYaml = writable({});
+export const whoamiYaml = writable({})
+export const mypersonasYaml = writable({})
 
 let usersUri = "users_yaml"
 let teamsUri = "teams_yaml"
+let whoamiUri = "whoami_yaml"
+let mypersonasUri = "mypersonas_yaml"
 
 export async function readYamlFromWebService(url) {
     readYamlFileFromWebService(url+usersUri, usersYaml);
     readYamlFileFromWebService(url+teamsUri, teamsYaml);
-
+    readYamlFileFromWebService(url+whoamiUri, whoamiYaml);
+    readYamlFileFromWebService(url+mypersonasUri, mypersonasYaml);
 }
 
 export async function readYamlFileFromWebService(url, datastore) {

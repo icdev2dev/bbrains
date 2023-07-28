@@ -3,25 +3,33 @@
     import { writable } from 'svelte/store';
     import axios, { all } from 'axios';
 
-    import DataServices from '../../DataServices.svelte';
 
     import { teamsYaml } from '../../dataservices';
     import { usersYaml } from '../../dataservices';
- 
+    import { mypersonasYaml } from '../../dataservices';
+    import { whoamiYaml } from '../../dataservices';
+
     let newQuery = '';
 
     let interactions = [];
+    let whoami = $whoamiYaml.whoami
 
     let members = $usersYaml.users
     let membersStore = writable(members)
 
     let teams = $teamsYaml.teams
     let teamsStore = writable(teams);
-    
+
+    let mypersonas = $mypersonasYaml.personas
+    let mypersonasStore = writable(mypersonas);
+    let selectedPersona;
+
 
     let visibleTeams = false;
     let visibleMembers = false;
-    
+
+    let isProcessing = false;
+
     function getTeamDescription (team) {
       let teamDescription = team.teamDescription + "\n";
 
@@ -89,6 +97,9 @@
 
         systemContextText = systemContextText + teamMembersBackground;
 
+        systemContextText = systemContextText + whoami;
+
+
         
 
       }
@@ -121,12 +132,20 @@
           });
 
           systemContextText = systemContextText + teamMembersBackground;
+          systemContextText = systemContextText + whoami;
+        
+
+        }
+        else {
+          systemContextText = systemContextText + whoami;
         }
       }
 
       const data = { query: newQuery, systemContext: systemContextText }; // Replace with the data you want to send
 
       console.log(systemContextText)
+      isProcessing = true;
+
       try {
         const response = await axios.post(url, data);
 
@@ -136,9 +155,11 @@
         interactions = [{ query: newQuery, response: "", editing: false }, ...interactions];
         interactions[0].response += response_html;
         interactions = [...interactions];
-
+        isProcessing = false;
+      
       } catch (error) {
         console.error('Error:', error);
+        isProcessing = false;
       }
     }
 
@@ -180,8 +201,6 @@
 
 </script>
 
-<DataServices/>
-
 
 <table>
     <tr>
@@ -196,6 +215,23 @@
                 <input type="checkbox" bind:checked={visibleMembers} />
                 Select Members
             </label>
+        </td>
+        <td>
+          <div class="mypersona">
+            <div>
+              My Persona
+            </div>
+            <div>
+              <select bind:value={selectedPersona}>
+                  {#each $mypersonasStore as mypersona (mypersona.Id) }
+                    <option value={mypersona.Id}> {mypersona.Persona}</option>
+                    
+                  {/each}
+              </select>
+            </div>
+          </div>
+          
+            
         </td>
         <td>
             <button on:click={clearInteractions}>Clear Interactions</button>
@@ -257,10 +293,15 @@
     <hr/>
   {/each}
   
+  {#if isProcessing}
+    <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
+  
+  {/if}
+
   <div>
     <label for="newQuery">Your New Query:</label>
     <textarea id="newQuery" bind:value={newQuery} on:keydown={handleKeyDown}></textarea>
-    <button on:click={submitQuery} disabled={!newQuery}>Submit</button>
+    <button on:click={postData} disabled={!newQuery}>Submit</button>
   </div>
 </div>
 
@@ -271,6 +312,9 @@
 <style>
     .plr {
         place-items: left;
+    }
+    .mypersona {
+      border: 1px solid gainsboro;
     }
     #newQuery {
         width: 100%;

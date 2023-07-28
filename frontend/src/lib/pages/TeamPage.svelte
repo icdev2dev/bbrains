@@ -32,7 +32,7 @@
                 <td>
                     <table>
                         <tr>
-                            <p>{team.description}</p>
+                            <p>{team.teamDescription}</p>
                         </tr>
                         <tr>
                             {#each team.members  as member }
