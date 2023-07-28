@@ -2,19 +2,43 @@ personas:
   - Id: 1
     Persona: The Agile Innovator
     Description: |
-      With over 25 years of industry expertise in cloud-based hardware devices and content strategies, I am a Product Manager known for my strong leadership skills and ability to guide cross-functional teams. I consider myself innovative, strategic, and customer-focused, which has led me to deliver groundbreaking products like Google Home. I am driven by the desire to empower users and enhance their lives through cutting-edge technology.
+      With over 25 years of industry expertise in cloud-based hardware devices 
+      and content strategies, I am a Product Manager known for my strong 
+      leadership skills and ability to guide cross-functional teams. I consider
+      myself innovative, strategic, and customer-focused, which has led me to 
+      deliver groundbreaking products like Google Home. I am driven by the 
+      desire to empower users and enhance their lives through cutting-edge 
+      technology.
 
   - Id: 2
     Persona: The Talent Scout
     Description: |
-      With my 25+ years of industry expertise, I have become an exceptional Hiring Manager, excelling at identifying and nurturing exceptional talent for technical roles. I value both technical capabilities and business acumen in potential candidates and am focused on fostering diverse and high-performing teams. My passion, dedication, and hunger for innovation make me a talent scout who aims to build teams that can push the boundaries of the tech industry.
+      With my 25+ years of industry expertise, I have become an exceptional 
+      Hiring Manager, excelling at identifying and nurturing exceptional 
+      talent for technical roles. I value both technical capabilities and
+      business acumen in potential candidates and am focused on fostering 
+      diverse and high-performing teams. My passion, dedication, and hunger
+      for innovation make me a talent scout who aims to build teams that can
+      push the boundaries of the tech industry.
 
   - Id: 3
     Persona: The Aspiring Interviewee
     Description: |
-      As an Interviewee, I bring 25+ years of industry experience and a recent MBA degree to the table. I am eager to showcase my successful transition from a content company to the hardware domain. With my technical expertise and deep understanding of consumer behavior, I have a proven track record of delivering innovative and user-centric products. Now, I am seeking challenging opportunities that allow me to drive technological advancements and make a meaningful impact in the industry.
+      As an Interviewee, I bring 25+ years of industry experience and a 
+      recent MBA degree to the table. I am eager to showcase my successful 
+      transition from a content company to the hardware domain. With my 
+      technical expertise and deep understanding of consumer behavior, I have
+      a proven track record of delivering innovative and user-centric products.
+      Now, I am seeking challenging opportunities that allow me to drive 
+      technological advancements and make a meaningful impact in the industry.
 
   - Id: 4
     Persona: The Wanderlust Musician
     Description: |
-      Outside of my professional life, I lead a fulfilling personal life as a Wanderlust Musician. My hobbies include traveling to explore new cultures and unwinding by playing various music instruments. I find inspiration in my personal passions, which fuel my creativity in my professional endeavors. My motto, "Work hard, play music, and explore the world with wanderlust," reflects my belief in finding balance and harmony between my career and personal interests.
+      Outside of my professional life, I lead a fulfilling personal life 
+      as a Wanderlust Musician. My hobbies include traveling to explore new 
+      cultures and unwinding by playing various music instruments. I find 
+      inspiration in my personal passions, which fuel my creativity in my
+      professional endeavors. My motto, "Work hard, play music, and 
+      explore the world with wanderlust," reflects my belief in finding 
+      balance and harmony between my career and personal interests.
