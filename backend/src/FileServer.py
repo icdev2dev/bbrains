@@ -43,14 +43,16 @@ def handle_post_request():
     # Perform any processing or actions based on the data received
     # Return a response if needed
     print(data)
-    res = invoke_openai(data['systemContext'], data['query']);
+    res = invoke_openai(data['model'], data['systemContext'], data['query']);
 
     response_data = {'message': res.choices[0]["message"]["content"]}
     return jsonify(response_data)
 
 
-def invoke_openai(s, q) :
-    req = openai.ChatCompletion.create(model="gpt-4-0613", messages=[
+def invoke_openai(model, s, q) :
+    print(model)
+    
+    req = openai.ChatCompletion.create(model=model, messages=[
                  {"role": "system", "content": s},
                 {"role": "user", "content": q}]
     )

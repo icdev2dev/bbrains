@@ -22,7 +22,10 @@
 
     let mypersonas = $mypersonasYaml.personas
     let mypersonasStore = writable(mypersonas);
+
     let selectedPersona;
+    let selectedModel = "gpt-3.5-turbo-16k"
+    let includeMyBackground = false;
 
 
     let visibleTeams = false;
@@ -97,9 +100,12 @@
 
         systemContextText = systemContextText + teamMembersBackground;
 
-        systemContextText = systemContextText + whoami;
+        if (includeMyBackground === true) {
+          systemContextText = systemContextText + whoami;
+        }
 
-
+        const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
+        systemContextText = systemContextText + lookupPersona.Description
         
 
       }
@@ -132,16 +138,30 @@
           });
 
           systemContextText = systemContextText + teamMembersBackground;
-          systemContextText = systemContextText + whoami;
-        
+          
+          if (includeMyBackground) {
+           systemContextText = systemContextText + whoami;
+          }
+          const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
+          systemContextText = systemContextText + lookupPersona.Description
+
+
 
         }
         else {
-          systemContextText = systemContextText + whoami;
+          if (includeMyBackground) {
+           systemContextText = systemContextText + whoami;
+          }
+          const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
+          systemContextText = systemContextText + lookupPersona.Description
+          
         }
       }
 
-      const data = { query: newQuery, systemContext: systemContextText }; // Replace with the data you want to send
+      const data = { model: selectedModel,
+                     query: newQuery, 
+                     systemContext: systemContextText 
+                    }; // Replace with the data you want to send
 
       console.log(systemContextText)
       isProcessing = true;
@@ -204,6 +224,7 @@
 
 <table>
     <tr>
+      <div class="theteams">
         <td>
             <label>
                 <input type="checkbox" bind:checked={visibleTeams} />
@@ -216,22 +237,41 @@
                 Select Members
             </label>
         </td>
+      </div>
         <td>
           <div class="mypersona">
             <div>
-              My Persona
+              About Me
             </div>
             <div>
-              <select bind:value={selectedPersona}>
-                  {#each $mypersonasStore as mypersona (mypersona.Id) }
-                    <option value={mypersona.Id}> {mypersona.Persona}</option>
-                    
-                  {/each}
-              </select>
+              <div>
+                <label>
+                  <input type="checkbox" bind:checked={includeMyBackground}/>
+                  Include My background?
+                </label>
+              </div>
+              <div>
+                My Persona
+                <select bind:value={selectedPersona}>
+                    {#each $mypersonasStore as mypersona (mypersona.Id) }
+                      <option value={mypersona.Id}> {mypersona.Persona}</option>
+                      
+                    {/each}
+                </select>
+              </div>
             </div>
           </div>
           
             
+        </td>
+        <td>
+          <div class="usemodel">
+            Use Model
+            <select bind:value={selectedModel}>
+              <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
+              <option value="gpt-4">gpt-4</option>
+            </select>
+          </div>
         </td>
         <td>
             <button on:click={clearInteractions}>Clear Interactions</button>
@@ -307,14 +347,18 @@
 
 
 
-
-
 <style>
     .plr {
         place-items: left;
     }
     .mypersona {
       border: 1px solid gainsboro;
+    }
+    .theteams {
+      border: 1px solid greenyellow;
+    }
+    .usemodel {
+      border: 1px solid blue;
     }
     #newQuery {
         width: 100%;
