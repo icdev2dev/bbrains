@@ -3,7 +3,7 @@ users:
     name: John Smith
     email: john.smith@example.com
     occupation: Software Engineer
-    background: >
+    background: |
       John Smith is a skilled software engineer with expertise in web application development. He has experience in
       building scalable solutions for both startups and enterprise clients. John is excited to explore how LLM can
       enhance the performance and security of his web applications.
@@ -27,7 +27,7 @@ users:
     name: Sarah Johnson
     email: sarah.johnson@example.com
     occupation: Product Manager
-    background: >
+    background: |
       Sarah Johnson is an experienced product manager with a focus on user-centered design. She is responsible for
       delivering exceptional experiences to both individual customers and enterprise clients. Sarah sees potential in
       integrating LLM to gather valuable user behavior insights.
@@ -51,7 +51,7 @@ users:
     name: Michael Anderson
     email: michael.anderson@example.com
     occupation: Data Scientist
-    background: >
+    background: |
       Michael Anderson is a skilled data scientist with expertise in statistical analysis and machine learning. He is
       excited to leverage LLM to gain deeper insights into data patterns and anomalies, enhancing his data-driven
       decision-making process.
@@ -75,7 +75,7 @@ users:
     name: Jennifer Miller
     email: jennifer.miller@example.com
     occupation: Director of Operations
-    background: >
+    background: |
       Jennifer Miller is an accomplished Director of Operations with extensive experience in managing large-scale
       projects and teams. She envisions LLM as a tool to streamline and optimize her team's workflows for maximum
       efficiency.
@@ -98,7 +98,7 @@ users:
     name: Robert Turner
     email: robert.turner@example.com
     occupation: VP of Sales
-    background: >
+    background: |
       Robert Turner is a highly successful VP of Sales, responsible for driving revenue growth and expanding the
       company's market reach. He believes LLM can offer valuable insights into customer behavior, enabling sales teams
       to make data-driven decisions.
@@ -121,7 +121,7 @@ users:
     name: Lisa Anderson
     email: lisa.anderson@example.com
     occupation: UX/UI Designer
-    background: >
+    background: |
       Lisa Anderson is a talented UX/UI Designer with a passion for creating seamless and delightful user experiences.
       She believes that LLM can provide valuable data insights that will inform her design decisions and optimize user
       interactions.
@@ -144,7 +144,7 @@ users:
     name: Mark Williams
     email: mark.williams@example.com
     occupation: DevOps Engineer
-    background: >
+    background: |
       Mark Williams is a seasoned DevOps Engineer responsible for ensuring smooth deployment and operations of software
       systems. He is eager to utilize LLM to gain insights into system performance and optimize infrastructure.
 
@@ -165,7 +165,7 @@ users:
     name: Jessica Adams
     email: jessica.adams@example.com
     occupation: Marketing Manager
-    background: >
+    background: |
       Jessica Adams is a skilled Marketing Manager with experience in creating and executing successful marketing
       campaigns. She envisions LLM as a tool to measure marketing campaign success and customer engagement.
 
@@ -187,7 +187,7 @@ users:
     name: Richard Walker
     email: richard.walker@example.com
     occupation: Chief Technology Officer (CTO)
-    background: >
+    background: |
       Richard Walker is a visionary Chief Technology Officer (CTO) who plays a crucial role in shaping the company's
       technology strategy. He believes LLM can empower the tech team with actionable data insights for better decision
       making.
@@ -211,7 +211,7 @@ users:
     name: Amanda Clark
     email: amanda.clark@example.com
     occupation: HR Manager
-    background: >
+    background: |
       Amanda Clark is a dedicated HR Manager responsible for nurturing a talented and diverse workforce. She sees the
       potential of LLM in understanding employee behavior, improving employee engagement, and optimizing HR processes.
 
@@ -232,7 +232,7 @@ users:
     name: William Adams
     email: william.adams@example.com
     occupation: CEO
-    background: >
+    background: |
       William Adams is the visionary CEO leading the company towards growth and success. He envisions LLM as a tool to
       empower the entire organization with data-driven insights for making strategic decisions.
 

@@ -4,27 +4,18 @@
     import { usersYaml } from '../../dataservices';
 
     import Hoverable from './Hoverable.svelte';
-
     
-
     let teams = $teamsYaml.teams ;   
     let members = $usersYaml.users;
 
-
     function findOcc(memberId) {
         let member = null;
-
         member = members.find(member => member.id === memberId)
-
         return member.occupation;
-
     }
-
 </script>
 
 {#each teams as team}
-
-
     <Hoverable let:hovering={active}>
         <div class:active>
             {#if active}
