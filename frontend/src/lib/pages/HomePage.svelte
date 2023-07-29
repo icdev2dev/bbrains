@@ -48,6 +48,27 @@
       return teamDescription
 
     }
+
+
+
+    async function getUserPerspective(userId) {
+      const url = 'http://127.0.0.1:5000/get_user_perspective';
+      const data = { userId: userId
+                    }; // Replace with the data you want to send
+
+      try {
+        const response = await axios.post(url, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}})
+        console.log('Response:', response.data);
+        return response.data;
+  
+      } catch (error) {
+          console.error('Error:', error);
+          return error;
+      }
+    }
+
+    
+
     async function postData() {
       const url = 'http://127.0.0.1:5000/post_endpoint';
       
@@ -89,16 +110,16 @@
 
         let teamMembersBackground = ""
 
-        allTeamMembers.forEach(memberinset => {
-          const lookupMember = $membersStore.find(member => member.id === memberinset)
-          teamMembersBackground = teamMembersBackground + lookupMember.name;
+          for (let memberinset of allTeamMembers) {
+            const lookupMember = $membersStore.find(member => member.id === memberinset)
+            let userPerspective = await getUserPerspective(lookupMember.id)
+            teamMembersBackground = teamMembersBackground + lookupMember.name;
+            teamMembersBackground = teamMembersBackground + " is a " + lookupMember.occupation + ". "
+            teamMembersBackground = teamMembersBackground + userPerspective;
+            teamMembersBackground = teamMembersBackground + " \n"
+          }
+          systemContextText = systemContextText + teamMembersBackground;
 
-          teamMembersBackground = teamMembersBackground + " is a " + lookupMember.occupation + ". "
-          teamMembersBackground = teamMembersBackground + lookupMember.background
-          teamMembersBackground = teamMembersBackground + " \n"          
-        });
-
-        systemContextText = systemContextText + teamMembersBackground;
 
         if (includeMyBackground === true) {
           systemContextText = systemContextText + whoami;
@@ -128,16 +149,18 @@
 
           let teamMembersBackground = ""
 
-          allTeamMembers.forEach(memberinset => {
+
+          for (let memberinset of allTeamMembers) {
             const lookupMember = $membersStore.find(member => member.id === memberinset)
+            let userPerspective = await getUserPerspective(lookupMember.id)
             teamMembersBackground = teamMembersBackground + lookupMember.name;
-
             teamMembersBackground = teamMembersBackground + " is a " + lookupMember.occupation + ". "
-            teamMembersBackground = teamMembersBackground + lookupMember.background
-            teamMembersBackground = teamMembersBackground + " \n"          
-          });
-
+            teamMembersBackground = teamMembersBackground + userPerspective;
+            teamMembersBackground = teamMembersBackground + " \n"
+          }
           systemContextText = systemContextText + teamMembersBackground;
+
+
           
           if (includeMyBackground) {
            systemContextText = systemContextText + whoami;

@@ -49,6 +49,10 @@ def handle_post_request():
 def handle_post_get_user_perspective() :
     data = request.json  # Assuming the data is sent as JSON in the request body
     
+    print(data)
+    print(type(data))
+    
+
     # The path here is different than send_file thing
     yaml_file_path = yaml_dir + str(data['userId']) + ".yaml"
 
@@ -79,7 +83,7 @@ def handle_post_update_user_perspective() :
     print(data)
     print(type(data))
     data = json.loads(data)
-    
+
     print(data["id"])
 
     # The path here is different than send_file thing
