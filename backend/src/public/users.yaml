@@ -77,8 +77,7 @@ users:
     occupation: Director of Operations
     background: |
       Jennifer Miller is an accomplished Director of Operations with extensive experience in managing large-scale
-      projects and teams. She envisions LLM as a tool to streamline and optimize her team's workflows for maximum
-      efficiency.
+      projects and teams. She is difficult to work with. She objects a lot and is not collaborative.
 
     interactions:
       - query: >
@@ -234,7 +233,8 @@ users:
     occupation: CEO
     background: |
       William Adams is the visionary CEO leading the company towards growth and success. He envisions LLM as a tool to
-      empower the entire organization with data-driven insights for making strategic decisions.
+      empower the entire organization with data-driven insights for making strategic decisions. However he is cost conscious
+      and brand protective.
 
     interactions:
       - query: >

@@ -1,18 +1,47 @@
 <script>
     import EditUserInteractions from './EditUserInteractions.svelte';
+    import axios from 'axios';   
 
     import { createEventDispatcher } from 'svelte';
 
     const dispatch = createEventDispatcher();
 
+    let isProcessing = false;
+
   
     export let user = {
+        id: '',
         name: '',
         email: '',
         occupation: '',
         background: '',
+        perspective: '',
         interactions: []
     };
+
+    async function updateUserPerspective(){
+        console.log(JSON.stringify(user))
+
+        const url = 'http://127.0.0.1:5000/update_user_perspective';
+        const data = JSON.stringify(user)
+
+        isProcessing = true;
+
+        try {
+            const response = await axios.post(url, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}})
+
+            console.log('Response:', response.data);
+            isProcessing = false;
+
+            
+      } catch (error) {
+            console.error('Error:', error);
+        isProcessing = false;
+
+      }
+    }    
+
+    
 
     function save() {
       user = {...user}; // Emitting new value for two-way binding
@@ -57,12 +86,20 @@
             </label>
         </div>
         <p/>
+        {#if isProcessing}
+            <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
+        {/if}
+
         <div id="backgroundField">
             <label>
                 Background:
                 <textarea id="backgroundField_textarea" bind:value={user.background} />
             </label>
-            
+            <label>
+                Updated Perspective:
+                <textarea id="perspectiveField_textarea" bind:value={user.perspective} />
+            </label>
+        
         </div>
 
         <h3>User Interactions</h3>
@@ -72,6 +109,9 @@
                 <EditUserInteractions {interaction} {index}  on:update={(event) => updateInteraction(event, index)} on:delete={() => deleteInteraction(index)} />
                 {/each}
                 <button type="button" on:click={addInteraction}>Add User Interaction</button>
+                <button on:click={updateUserPerspective}>Update User Perspective</button>
+  
+
             </div>
         </table>
     </div>
@@ -82,6 +122,18 @@
   <style>
     #tbl1 {
         width: 100%;
+    }
+    #perspectiveField_textarea {
+        width: 100%;
+        height: 200px;
+        padding: 10px;
+        font-size: 16px;
+        line-height: 1.5;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+        box-shadow: inset 0 1px 2px rgba(0,0,0,.1);
+        resize: vertical;
+        
     }
     #backgroundField_textarea {
         width: 100%;

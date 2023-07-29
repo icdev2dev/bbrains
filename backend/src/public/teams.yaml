@@ -17,11 +17,10 @@ teams:
         teamMemberName: Jessica Adams
 
   - teamId: 33e3a8f9-9f28-47c8-8a33-944e7da1e66e
-    teamName: Operations Team for introducing LLMs
+    teamName: Operations Team for for International Markets
     teamDescription: |
-      The Operations Team focuses on planning and executing the implementation of LLMs (Let's Log Matters) within the
-      company's existing infrastructure. This team is responsible for coordinating with various departments and ensuring
-      a smooth rollout.
+      The Operations Team focuses on optimizing the processes for cost savings. This team co-ordinates with product, 
+      engineering and QA. It reports into the director of engineering. Their goal is to increase efficieny 15% YOY.
 
     members:
       - memberId: 7888bb8b-9f91-4cd2-b117-3a9fb888e2c7

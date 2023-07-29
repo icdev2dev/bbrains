@@ -1,6 +1,7 @@
 
 <script>
     import { usersYaml } from '../../dataservices';
+    import axios from 'axios';
     let users = $usersYaml.users
 
     import EditUser from '../forms/EditUser.svelte';
@@ -8,22 +9,53 @@
     let editedUser = null;
     let opAddUser = false;
 
-
+    let userPers = ''
 
     
 
     function updateYamlData() {
       const updatedData = { users: users };
-      const yamlText = jsYaml.dump(updatedData);
+//      const yamlText = jsYaml.dump(updatedData);
       // Send the updated YAML data to the server or save it to a file as needed
       // For demonstration purposes, we're only logging the data to the console
-      console.log(yamlText);
+//      console.log(yamlText);
     }
 
 
-    function startEditing(user) {      
-        removePotentiallyAddedUser()
+
+    async function getUserPerspective(userId) {
+      const url = 'http://127.0.0.1:5000/get_user_perspective';
+      const data = { userId: userId
+                    }; // Replace with the data you want to send
+
+
+      try {
+        const response = await axios.post(url, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}})
+
+        console.log('Response:', response.data);
+
+        userPers = response.data
+
+        // Do something with the response data
+        editedUser['perspective'] = userPers
+
+      
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    function startEditing(user) {  
+
+//        removePotentiallyAddedUser()
+        
         editedUser = { ...user }; // Make a copy so we don't edit the original item directly
+        getUserPerspective(user['id'])
+        
+        
+        console.log(editedUser)
+
+
     }
 
     
@@ -48,11 +80,12 @@
         email: '',
         occupation: '',
         background: '',
+        perspective: '',
         interactions: [],
       });
       editedUser = {...users[users.length - 1]}
     }
-  
+
     function saveChanges() {
         const originalUser = users.find(user => user.id === editedUser.id);
         Object.assign(originalUser, editedUser); // Save the changes
