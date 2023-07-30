@@ -8,7 +8,8 @@
 
     let isProcessing = false;
 
-  
+    let value = '';
+
     export let user = {
         id: '',
         name: '',
@@ -29,16 +30,16 @@
 
         try {
             const response = await axios.post(url, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}})
+            value = response.data;
+            user['perspective'] = value;
 
             console.log('Response:', response.data);
             isProcessing = false;
-
             
-      } catch (error) {
+        } catch (error) {
             console.error('Error:', error);
-        isProcessing = false;
-
-      }
+            isProcessing = false;
+        }
     }    
 
     
@@ -67,7 +68,11 @@
     } 
 
   </script>
-  
+
+    {#if isProcessing}
+        <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
+    {/if}
+
   <form class="editForm" on:submit|preventDefault={save} on:reset={cancel}>
     <h2>Edit User</h2>
     <div id="inputFields">
@@ -86,19 +91,15 @@
             </label>
         </div>
         <p/>
-        {#if isProcessing}
-            <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
-        {/if}
 
         <div id="backgroundField">
             <label>
                 Background:
                 <textarea id="backgroundField_textarea" bind:value={user.background} />
             </label>
-            <label>
-                Updated Perspective:
-                <textarea id="perspectiveField_textarea" bind:value={user.perspective} />
-            </label>
+
+                <p> Updated Perspective:</p>
+                <p> {user.perspective} </p>
         
         </div>
 
@@ -109,8 +110,7 @@
                 <EditUserInteractions {interaction} {index}  on:update={(event) => updateInteraction(event, index)} on:delete={() => deleteInteraction(index)} />
                 {/each}
                 <button type="button" on:click={addInteraction}>Add User Interaction</button>
-                <button on:click={updateUserPerspective}>Update User Perspective</button>
-  
+                <button on:click={updateUserPerspective}>Update User Perspective</button>  
 
             </div>
         </table>

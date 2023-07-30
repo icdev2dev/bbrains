@@ -10,6 +10,7 @@ CORS(app)  # Enable CORS for all routes
 
 yaml_dir = "src/public/"
 users_yaml = yaml_dir + "users.yaml"
+yaml_userinteractions_dir = yaml_dir + "/userinteractions/"
 
 # Define a route to serve the file
 @app.route('/users_yaml', methods=['GET'])
@@ -45,13 +46,20 @@ def handle_post_request():
     return jsonify(response_data)
 
 
+@app.route('/update_users', methods=['POST'])  # bc even a get_user_perspective might change state
+def handle_post_update_users():
+    data = request.json
+    with open(users_yaml, "w") as file:
+        yaml.dump(data, file)
+    return data
+
 @app.route('/get_user_perspective', methods=['POST'])  # bc even a get_user_perspective might change state
 def handle_post_get_user_perspective() :
     data = request.json  # Assuming the data is sent as JSON in the request body
     
     print(data)
     print(type(data))
-    
+
 
     # The path here is different than send_file thing
     yaml_file_path = yaml_dir + str(data['userId']) + ".yaml"
@@ -88,6 +96,21 @@ def handle_post_update_user_perspective() :
 
     # The path here is different than send_file thing
     yaml_file_path = yaml_dir + str(data["id"]) + ".yaml"
+    yaml_userinteractions_file_path = yaml_userinteractions_dir + str(data["id"]) + ".yaml"
+
+    if Path(yaml_userinteractions_file_path).is_file(): 
+        with open(yaml_userinteractions_file_path) as file:
+            yaml_userinteractions = yaml.safe_load(file)
+    else:
+        yaml_userinteractions =  {'interactions': []}
+
+    
+    yaml_userinteractions['interactions'] = yaml_userinteractions['interactions'] + data['interactions']
+
+    with open(yaml_userinteractions_file_path, "w") as file:
+        _ = yaml.dump(yaml_userinteractions, file)
+        
+
 
     if Path(yaml_file_path).is_file():
         with open(yaml_file_path, 'r') as file:
@@ -126,7 +149,7 @@ def handle_post_update_user_perspective() :
     with open(yaml_file_path, 'w') as file:
         yaml_data = yaml.dump(yaml_data,file)
 
-    return "ok"
+    return updated_perspective;
 
 
 def invoke_openai_no_s(model, q) :

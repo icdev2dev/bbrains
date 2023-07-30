@@ -1,9 +1,12 @@
 
 <script>
     import { usersYaml } from '../../dataservices';
+
+    import { v4 as uuidv4 } from 'uuid';
+
     import axios from 'axios';
     let users = $usersYaml.users
-
+    
     import EditUser from '../forms/EditUser.svelte';
     
     let editedUser = null;
@@ -13,12 +16,20 @@
 
     
 
-    function updateYamlData() {
+    async function updateYamlData() {
       const updatedData = { users: users };
-//      const yamlText = jsYaml.dump(updatedData);
-      // Send the updated YAML data to the server or save it to a file as needed
-      // For demonstration purposes, we're only logging the data to the console
-//      console.log(yamlText);
+      const url = 'http://127.0.0.1:5000/update_users';
+      const data = users
+
+      try {
+        const response = await axios.post(url, JSON.stringify(data), {headers: {'Content-Type': 'application/json'}})
+
+        console.log('Response:', response.data);
+
+       
+      } catch (error) {
+        console.error('Error:', error);
+      }
     }
 
 
@@ -47,7 +58,7 @@
 
     function startEditing(user) {  
 
-//        removePotentiallyAddedUser()
+        removePotentiallyAddedUser()
         
         editedUser = { ...user }; // Make a copy so we don't edit the original item directly
         getUserPerspective(user['id'])
@@ -87,12 +98,14 @@
     }
 
     function saveChanges() {
+        console.log(editedUser.id)
+
         const originalUser = users.find(user => user.id === editedUser.id);
         Object.assign(originalUser, editedUser); // Save the changes
         console.log(originalUser);
         users = users;
         editedUser = null;
-        updateYamlData();
+        // updateYamlData();   THIS IS NOT WORKING YET
 
     }
 
