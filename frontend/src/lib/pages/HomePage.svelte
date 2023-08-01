@@ -9,6 +9,23 @@
     import { mypersonasYaml } from '../../dataservices';
     import { whoamiYaml } from '../../dataservices';
 
+    import {productsYaml} from "../../dataservices";
+
+    import { isLoadingMyPersonasYaml} from "../../dataservices.js"  
+    import { onDestroy } from "svelte";
+  
+    let isLoading = true;
+
+    const unsubs = isLoadingMyPersonasYaml.subscribe(value => {
+     isLoading = value;
+     console.log(value);
+
+    })
+
+  onDestroy(()=> {
+    unsubs()
+  })
+
     let newQuery = '';
 
     let interactions = [];
@@ -23,16 +40,23 @@
     let mypersonas = $mypersonasYaml.personas
     let mypersonasStore = writable(mypersonas);
 
+    let products = $productsYaml.products;
+    let productsStore = writable(products);
+
     let selectedPersona;
     let selectedModel = "gpt-3.5-turbo-16k"
+    let selectedProduct = null
+
     let includeMyBackground = false;
 
+    let includeProductUpdate = false;
 
     let visibleTeams = false;
     let visibleMembers = false;
 
     let isProcessing = false;
 
+    
     function getTeamDescription (team) {
       let teamDescription = team.teamDescription + "\n";
 
@@ -128,6 +152,12 @@
         const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
         systemContextText = systemContextText + lookupPersona.Description
         
+        if (includeProductUpdate == true) {
+          const lookupProduct = $productsStore.find(product => product.id === selectedProduct)
+          systemContextText = systemContextText + "\n Please ensure that each team member have their own opinions about the product as described below; but only those opinions that are relevant to me.\n"
+          systemContextText = systemContextText + "PRODUCT DESCRIPTION: \n"
+          systemContextText = systemContextText + lookupProduct.description
+        }
 
       }
       else {
@@ -167,7 +197,13 @@
           }
           const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
           systemContextText = systemContextText + lookupPersona.Description
-
+          
+          if (includeProductUpdate == true) {
+              const lookupProduct = $productsStore.find(product => product.id === selectedProduct)
+              systemContextText = systemContextText + "\n Please ensure that each team member have their own opinions about the product as described below; but only those opinions that are relevant to me.\n"
+              systemContextText = systemContextText + "PRODUCT DESCRIPTION: \n"
+              systemContextText = systemContextText + lookupProduct.description
+          }
 
 
         }
@@ -177,7 +213,12 @@
           }
           const lookupPersona = $mypersonasStore.find(persona => persona.Id === selectedPersona)
           systemContextText = systemContextText + lookupPersona.Description
-          
+          if (includeProductUpdate == true) {
+              const lookupProduct = $productsStore.find(product => product.id === selectedProduct)
+              systemContextText = systemContextText + "\n Please ensure that I have opinions about the product as described below; but only those opinions that are relevant to me.\n"
+              systemContextText = systemContextText + "PRODUCT DESCRIPTION: \n"
+              systemContextText = systemContextText + lookupProduct.description
+          }
         }
       }
 
@@ -244,129 +285,164 @@
 
 </script>
 
-
-<table>
-    <tr>
-      <div class="theteams">
-        <td>
-            <label>
-                <input type="checkbox" bind:checked={visibleTeams} />
-                Select Team
-            </label>
-        </td>
-        <td>
-            <label>
-                <input type="checkbox" bind:checked={visibleMembers} />
-                Select Members
-            </label>
-        </td>
-      </div>
-        <td>
-          <div class="mypersona">
-            <div>
-              About Me
-            </div>
-            <div>
+{#if  isLoading}
+    <p> Loading</p>
+{:else} 
+  <table>
+      <tr>
+        <div class="theteams">
+          <td>
+              <label>
+                  <input type="checkbox" bind:checked={visibleTeams} />
+                  Select Team
+              </label>
+          </td>
+          <td>
+              <label>
+                  <input type="checkbox" bind:checked={visibleMembers} />
+                  Select Members
+              </label>
+          </td>
+        </div>
+          <td>
+            <div class="mypersona">
               <div>
-                <label>
-                  <input type="checkbox" bind:checked={includeMyBackground}/>
-                  Include My background?
-                </label>
+                About Me
               </div>
               <div>
-                My Persona
-                <select bind:value={selectedPersona}>
-                    {#each $mypersonasStore as mypersona (mypersona.Id) }
-                      <option value={mypersona.Id}> {mypersona.Persona}</option>
-                      
-                    {/each}
-                </select>
-              </div>
-            </div>
-          </div>
-          
-            
-        </td>
-        <td>
-          <div class="usemodel">
-            Use Model
-            <select bind:value={selectedModel}>
-              <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
-              <option value="gpt-4">gpt-4</option>
-            </select>
-          </div>
-        </td>
-        <td>
-            <button on:click={clearInteractions}>Clear Interactions</button>
-        </td>
-    
-    </tr>
-</table>
-
-{#if visibleTeams}
-    <table>
-	<p in:fly={{ y: 200, duration: 2000 }} out:fade>
-            {#each $teamsStore as team }
-            <tr class="plr">
                 <div>
-                    <input type="checkbox" bind:checked={team.selected} />
-                    {team.teamName}
+                  <label>
+                    <input type="checkbox" bind:checked={includeMyBackground}/>
+                    Include My background?
+                  </label>
                 </div>
-            </tr>
-           {/each}
-                
-    </p>
-    </table>
+                <div>
+                  My Persona
+                  <select bind:value={selectedPersona}>
+                      {#each $mypersonasStore as mypersona (mypersona.Id) }
+                        <option value={mypersona.Id}> {mypersona.Persona}</option>
+                        
+                      {/each}
+                  </select>
+                </div>
+              </div>
+            </div>
+            
+              
+          </td>
 
-{/if}
+          
+          <td>
+            <div class="morecontext">  
+              More Context
+              <div>
+                <div>
+                  <div>
+                    <label>
+                      <input type="checkbox" bind:checked={includeProductUpdate}/>
+                      Include Product Update?
+                    </label>
+                  </div>
+                  <div>
+                    <select bind:value={selectedProduct}>
 
-{#if visibleMembers}
-    Individual Members
-    <table>
-	<p in:fly={{ y: 200, duration: 2000 }} out:fade>
-        
-            {#each $membersStore as member }
-                <tr class="plr">
-                    <div>
-                        <input type="checkbox" bind:checked={member.selected} />
+                      {#each $productsStore as product (product.id) }
+                        <option value={product.id}> {product.name}</option>
+                      {/each}
+  
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </td>
+          <div class="usemodel">
+            <td>
+                Use Model
+                <select bind:value={selectedModel}>
+                  <option value="gpt-3.5-turbo-16k">gpt-3.5-turbo-16k</option>
+                  <option value="gpt-4">gpt-4</option>
+                </select>
+            </td>
+          
+            <td>
+                <button on:click={clearInteractions}>Clear Interactions</button>
+            </td>
+          
+          </div>
+      </tr>
+  </table>
 
-                        {member.name} -> {member.occupation}
-                    </div>
-                </tr>
+  {#if visibleTeams}
+      <table>
+    <p in:fly={{ y: 200, duration: 2000 }} out:fade>
+              {#each $teamsStore as team }
+              <tr class="plr">
+                  <div>
+                      <input type="checkbox" bind:checked={team.selected} />
+                      {team.teamName}
+                  </div>
+              </tr>
             {/each}
-    </p>
-    </table>
+                  
+      </p>
+      </table>
 
-{/if}
-
-<h2> Prompt </h2>
-
-<div>
-  {#each interactions as interaction, i (i)}
-    <p>
-      <strong>Query:</strong> 
-        <div class="queryresponse" bind:innerHTML={interaction.query} contenteditable=false/>
-    
-      
-    
-    <strong>Response:</strong> 
-    
-      <div class="queryresponse" bind:innerHTML={interaction.response} contenteditable=false/>
-    
-    <hr/>
-  {/each}
-  
-  {#if isProcessing}
-    <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
-  
   {/if}
 
+  {#if visibleMembers}
+      Individual Members
+      <table>
+    <p in:fly={{ y: 200, duration: 2000 }} out:fade>
+          
+              {#each $membersStore as member }
+                  <tr class="plr">
+                      <div>
+                          <input type="checkbox" bind:checked={member.selected} />
+
+                          {member.name} -> {member.occupation}
+                      </div>
+                  </tr>
+              {/each}
+      </p>
+      </table>
+
+  {/if}
+
+  <h2> Prompt </h2>
+
   <div>
-    <label for="newQuery">Your New Query:</label>
-    <textarea id="newQuery" bind:value={newQuery} on:keydown={handleKeyDown}></textarea>
-    <button on:click={postData} disabled={!newQuery}>Submit</button>
+    {#each interactions as interaction, i (i)}
+      <p>
+        <strong>Query:</strong> 
+          <div class="queryresponse" bind:innerHTML={interaction.query} contenteditable=false/>
+      
+        
+      
+      <strong>Response:</strong> 
+      
+        <div class="queryresponse" bind:innerHTML={interaction.response} contenteditable=false/>
+      
+      <hr/>
+    {/each}
+    
+    {#if isProcessing}
+      <img src="hourglass.jpg" alt="Loading" width="10px" height="20px"/>
+    
+    {/if}
+
+    <div>
+      <label for="newQuery">Your New Query:</label>
+      <textarea id="newQuery" bind:value={newQuery} on:keydown={handleKeyDown}></textarea> 
+      <button on:click={postData} disabled={!newQuery}>Submit</button>
+    </div>
   </div>
-</div>
+
+
+{/if}
+
+
+
 
 
 
@@ -383,6 +459,11 @@
     .usemodel {
       border: 1px solid blue;
     }
+    .morecontext {
+      border: 1px solid orange;
+      width: 100%;
+    }
+
     #newQuery {
         width: 100%;
         min-height: 100px;

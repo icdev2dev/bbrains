@@ -9,33 +9,62 @@
   import MembersPage from "./lib/pages/MembersPage.svelte";
   import WhoAmI from "./lib/pages/WhoAmI.svelte";
 
+  import { isLoadingMyPersonasYaml} from "./dataservices.js"  
+  import { onDestroy } from "svelte";
+  
+  let isLoading = true;
+
+  const unsubs = isLoadingMyPersonasYaml.subscribe(value => {
+    isLoading = value;
+    console.log(value);
+
+  })
+
+  onDestroy(()=> {
+    unsubs()
+  })
+  
+  // let tabs = [
+  //   {name:'Home', route: '/', component: HomePage},
+  //   {name: 'Teams', route: '/teams', component: TeamPage},
+  //   {name: 'Members', route: '/members', component: MembersPage},
+  //   {name: 'About Me', route: '/aboutme', component: WhoAmI}
+  // ]
+
   let tabs = [
     {name:'Home', route: '/', component: HomePage},
-    {name: 'Teams', route: '/teams', component: TeamPage},
     {name: 'Members', route: '/members', component: MembersPage},
+    {name: 'Teams', route: '/teams', component: TeamPage},
     {name: 'About Me', route: '/aboutme', component: WhoAmI}
+
+
   ]
 
 </script>
 
 <DataServices/>
+{#if isLoading }
 
+  <p> Loading</p>
 
-<Router>
-<nav>
-  <ul>
-    {#each tabs as tab}
-      <li><Link to={tab.route}>{tab.name}</Link></li>
-    {/each}
-  </ul>
-</nav>
+{:else}
 
-{#each tabs as tab}
-  <Route path={tab.route} >
-    <svelte:component this={tab.component} />
-  </Route>
-{/each}
-</Router>
+          <Router>
+          <nav>
+            <ul>
+              {#each tabs as tab}
+                <li><Link to={tab.route}>{tab.name}</Link></li>
+              {/each}
+            </ul>
+          </nav>
+
+          {#each tabs as tab}
+            <Route path={tab.route} >
+              <svelte:component this={tab.component} />
+            </Route>
+          {/each}
+          </Router>
+  {/if}
 
 
 <style>

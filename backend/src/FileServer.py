@@ -33,6 +33,11 @@ def serve_file_mypersonas():
     file_path = 'public/mypersonas.yaml'    
     return send_file(file_path, as_attachment=True)
 
+@app.route('/products_yaml', methods=['GET'])
+def serve_file_products():
+    file_path = 'public/products.yaml'    
+    return send_file(file_path, as_attachment=True)
+
 
 @app.route('/post_endpoint', methods=['POST'])
 def handle_post_request():
