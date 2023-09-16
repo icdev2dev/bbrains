@@ -28,9 +28,12 @@ users:
     email: sarah.johnson@example.com
     occupation: Product Manager
     background: |
-      Sarah Johnson is an experienced product manager with a focus on user-centered design. She is responsible for
-      delivering exceptional experiences to both individual customers and enterprise clients. Sarah sees potential in
-      integrating LLM to gather valuable user behavior insights.
+      Sarah Johnson is an experienced product manager with a focus on system thinking, product strategy, product vision. 
+      She is a ninja in data analytics with specialization in predictive analysis.. She is responsible for
+      delivering multiple product lines. She is focussed on delivering exceptional customer experience. She has a lot 
+      of domain knowledge because of her extensive experience at the company. She is fussy about the narrative; she will 
+      go after each and every word.
+      
 
     interactions:
       - query: >

@@ -13,7 +13,9 @@
 
     import { isLoadingMyPersonasYaml} from "../../dataservices.js"  
     import { onDestroy } from "svelte";
-  
+
+    import MicAccess from '../components/MicAccess.svelte';
+    
     let isLoading = true;
 
     const unsubs = isLoadingMyPersonasYaml.subscribe(value => {
@@ -57,6 +59,38 @@
     let isProcessing = false;
 
     
+    async function onMicStop(audioBlob) {
+      alert('cool');
+
+      const url = 'http://127.0.0.1:5000/convert_audio_to_text';
+
+      try {
+        const response = await fetch(url, {
+            method: 'POST',
+            body: audioBlob,
+            headers: {
+                'Content-Type': 'application/octet-stream'  // This indicates that you're sending raw binary data
+            }
+        });
+        
+        const data = await response.json();
+        console.log(data.text);
+        newQuery = data.text;
+
+      } catch (error) {
+        console.error("There was an error sending the blob:", error);
+      }
+
+
+
+    }
+
+    function onMicStart(message) {
+      alert(message);
+      newQuery = "";
+    }
+
+
     function getTeamDescription (team) {
       let teamDescription = team.teamDescription + "\n";
 
@@ -433,6 +467,8 @@
 
     <div>
       <label for="newQuery">Your New Query:</label>
+      <MicAccess onMicStart={onMicStart}, onMicStop={onMicStop} />
+
       <textarea id="newQuery" bind:value={newQuery} on:keydown={handleKeyDown}></textarea> 
       <button on:click={postData} disabled={!newQuery}>Submit</button>
     </div>

@@ -5,6 +5,8 @@ from pathlib import Path
 import yaml
 import json
 
+import uuid
+
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
@@ -86,6 +88,23 @@ def handle_post_get_user_perspective() :
                     with open(yaml_file_path, "w") as file:
                         yaml.dump(data, file)
     return perspective
+
+
+@app.route('/convert_audio_to_text', methods=['POST'])
+def handle_convert_audio_to_text():
+    audio_blob=request.data
+
+    fileName = uuid.uuid4();
+    fileName = str(fileName) +".wav"
+
+    with open(fileName, "wb") as writeFile:
+        writeFile.write(audio_blob)
+    
+    with open(fileName, "rb") as audio_file:
+     transcript = openai.Audio.transcribe("whisper-1", audio_file)
+
+    print(transcript.to_dict())
+    return jsonify(transcript.to_dict())
 
 
 
